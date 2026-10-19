@@ -20,3 +20,13 @@ requires_gpu = pytest.mark.skipif(
     not (HAS_CUDA and HAS_TRITON),
     reason=f"requires CUDA + Triton (cuda={HAS_CUDA}, triton={HAS_TRITON})",
 )
+
+
+@pytest.fixture(autouse=True)
+def _reset_kernel_fallback_warnings():
+    """Kernel modules warn once per process; tests assert each warning fresh."""
+    from flashattn_tile.kernels import decode, prefill
+
+    prefill._WARNED.clear()
+    decode._WARNED.clear()
+    yield
