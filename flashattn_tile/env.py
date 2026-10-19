@@ -17,6 +17,7 @@ Two kinds of numbers live here and they are deliberately kept apart:
 from __future__ import annotations
 
 import importlib.metadata
+import os
 import platform
 import sys
 import time
@@ -85,8 +86,13 @@ def device_info() -> dict:
         "max_shared_memory_per_multiprocessor": None,
         "regs_per_multiprocessor": None,
         "max_threads_per_multiprocessor": None,
-        "cpu_count": torch.get_num_threads(),
-        "cpu_physical_count": __import__("os").cpu_count(),
+        "cpu_count": os.cpu_count(),
+        "torch_num_threads": torch.get_num_threads(),
+        "load_average": (
+            {"1m": os.getloadavg()[0], "5m": os.getloadavg()[1], "15m": os.getloadavg()[2]}
+            if hasattr(os, "getloadavg")
+            else None
+        ),
     }
     if cuda:
         p = torch.cuda.get_device_properties(0)

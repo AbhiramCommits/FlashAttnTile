@@ -43,7 +43,7 @@ def main() -> int:
             f"[{info['peak_fp16_tflops_source']}]"
         )
     else:
-        print(f"GPU            : none (CPU: {info['processor']}, {info['cpu_physical_count']} threads)")
+        print(f"GPU            : none (CPU: {info['processor']}, {info['cpu_count']} threads)")
         print("HBM bandwidth  : not measured (no CUDA device)")
         print(
             "spec FP16 TC   : not applicable "

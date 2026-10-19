@@ -1,0 +1,2471 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-10-19T08:40:52.072821+00:00",
+  "status": "no_gpu",
+  "reason": "no CUDA device; triton not importable",
+  "environment": {
+    "timestamp_utc": "2026-10-19T08:40:50.519186+00:00",
+    "torch_version": "2.11.0",
+    "torch_cuda_version": null,
+    "triton_version": null,
+    "triton_available": false,
+    "python_version": "3.13.9",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "cuda_available": false,
+    "mps_available": true,
+    "has_gpu": false,
+    "device_count": 0,
+    "gpu_name": null,
+    "compute_capability": null,
+    "sm_count": null,
+    "total_hbm_bytes": null,
+    "total_hbm_gib": null,
+    "l2_cache_bytes": null,
+    "max_shared_memory_per_block": null,
+    "max_shared_memory_per_multiprocessor": null,
+    "regs_per_multiprocessor": null,
+    "max_threads_per_multiprocessor": null,
+    "cpu_count": 8,
+    "torch_num_threads": 4,
+    "load_average": {
+      "1m": 28.3720703125,
+      "5m": 25.328125,
+      "15m": 17.12646484375
+    },
+    "measured_hbm_bandwidth_gbs": null,
+    "measured_host_bandwidth_gbs": 44.38667671400408,
+    "peak_fp16_tflops_spec": null,
+    "peak_fp16_tflops_source": "no CUDA device detected; spec table not applicable"
+  },
+  "baselines": {
+    "flash_attn": {
+      "available": false,
+      "reason": "ModuleNotFoundError: No module named 'flash_attn'"
+    },
+    "flashinfer": {
+      "available": false,
+      "reason": "ModuleNotFoundError: No module named 'flashinfer'"
+    },
+    "sdpa": {
+      "available": true,
+      "version": "2.11.0"
+    },
+    "triton": {
+      "available": false,
+      "version": null
+    },
+    "native_cuda": {
+      "available": false,
+      "reason": "ImportError: cannot import name 'native' from 'flashattn_tile' (/Users/abhiramkasireddi/FlashAttnTile/flashattn_tile/__init__.py)"
+    },
+    "ncu": {
+      "available": false,
+      "path": null
+    }
+  },
+  "requested_grid": {
+    "decode": {
+      "batch": [
+        1,
+        8,
+        32,
+        128
+      ],
+      "ctx": [
+        128,
+        1024,
+        4096,
+        16384
+      ],
+      "num_heads": 32,
+      "num_kv_heads": 8,
+      "head_dim": 128,
+      "page_size": 16
+    },
+    "prefill": {
+      "seq_len": [
+        512,
+        1024,
+        2048,
+        4096
+      ],
+      "batch": 1,
+      "num_heads": 32,
+      "num_kv_heads": 8,
+      "head_dim": 128,
+      "page_size": 16
+    },
+    "note": "full grid is executed only on CUDA hosts; CPU hosts run a reduced sweep"
+  },
+  "executed_grid": {
+    "decode": {
+      "batch": [
+        1,
+        8
+      ],
+      "ctx": [
+        128,
+        1024,
+        4096
+      ],
+      "num_heads": 8,
+      "num_kv_heads": 2,
+      "head_dim": 64,
+      "page_size": 16
+    },
+    "prefill": {
+      "seq_len": [
+        128,
+        512,
+        1024
+      ],
+      "batch": 1,
+      "num_heads": 8,
+      "num_kv_heads": 2,
+      "head_dim": 64
+    }
+  },
+  "modes": {
+    "decode": {
+      "status": "no_gpu",
+      "device": "cpu",
+      "dtype": "float32",
+      "requested_dtype": "fp16",
+      "executed_grid": {
+        "batch": [
+          1,
+          8
+        ],
+        "ctx": [
+          128,
+          1024,
+          4096
+        ],
+        "num_heads": 8,
+        "num_kv_heads": 2,
+        "head_dim": 64,
+        "page_size": 16
+      },
+      "rows": [
+        {
+          "mode": "decode",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 128,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 1.1754590086638927,
+          "latency_aggregation": "min",
+          "mean_ms": 4.7878751414828,
+          "median_ms": 3.6049159825779498,
+          "min_ms": 1.1754590086638927,
+          "p90_ms": 10.347417031880468,
+          "iters": 15,
+          "tflops": 0.00022301415708062065,
+          "gbytes_per_s": 0.11499167474469502,
+          "arithmetic_intensity": 1.9393939393939394,
+          "flops": 262144,
+          "bytes": 135168,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 0.029031210496145633,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "decode",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 128,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 0.03412499791011214,
+          "latency_aggregation": "min",
+          "mean_ms": 0.05061692791059613,
+          "median_ms": 0.04845898365601897,
+          "min_ms": 0.03412499791011214,
+          "p90_ms": 0.06574997678399086,
+          "iters": 15,
+          "tflops": 0.007681875928329941,
+          "gbytes_per_s": 15.483781168040037,
+          "arithmetic_intensity": 0.49612403100775193,
+          "flops": 262144,
+          "bytes": 528384,
+          "pct_measured_hbm": null,
+          "gather_ms": 0.0682919635437429,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 2.60770320892334e-08,
+          "notes": "CPU SDPA; attention only, gather timed separately; K/V expanded",
+          "sdpa_e2e_ms": 0.10241696145385504
+        },
+        {
+          "mode": "decode",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 1024,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 2.1819579997099936,
+          "latency_aggregation": "min",
+          "mean_ms": 3.48096105735749,
+          "median_ms": 3.337833972182125,
+          "min_ms": 2.1819579997099936,
+          "p90_ms": 4.668999987188727,
+          "iters": 15,
+          "tflops": 0.0009611330741832495,
+          "gbytes_per_s": 0.4824437501271389,
+          "arithmetic_intensity": 1.9922178988326849,
+          "flops": 2097152,
+          "bytes": 1052672,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 0.08816621610882407,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "decode",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 1024,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 0.19237498054280877,
+          "latency_aggregation": "min",
+          "mean_ms": 1.623733260203153,
+          "median_ms": 1.2115829740650952,
+          "min_ms": 0.19237498054280877,
+          "p90_ms": 4.0467079961672425,
+          "iters": 15,
+          "tflops": 0.010901376021365343,
+          "gbytes_per_s": 21.824043792772414,
+          "arithmetic_intensity": 0.4995121951219512,
+          "flops": 2097152,
+          "bytes": 4198400,
+          "pct_measured_hbm": null,
+          "gather_ms": 0.8275000145658851,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 1.955777406692505e-08,
+          "notes": "CPU SDPA; attention only, gather timed separately; K/V expanded",
+          "sdpa_e2e_ms": 1.0198749951086938
+        },
+        {
+          "mode": "decode",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 4096,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 6.461958982981741,
+          "latency_aggregation": "min",
+          "mean_ms": 10.443061143935969,
+          "median_ms": 10.827791003976017,
+          "min_ms": 6.461958982981741,
+          "p90_ms": 14.729916991200298,
+          "iters": 15,
+          "tflops": 0.0012981524677102244,
+          "gbytes_per_s": 0.6497100973647363,
+          "arithmetic_intensity": 1.9980487804878049,
+          "flops": 8388608,
+          "bytes": 4198400,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 0.06472495174327286,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "decode",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 4096,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 0.4182499833405018,
+          "latency_aggregation": "min",
+          "mean_ms": 0.6399555907895168,
+          "median_ms": 0.5392089951783419,
+          "min_ms": 0.4182499833405018,
+          "p90_ms": 0.767333956900984,
+          "iters": 15,
+          "tflops": 0.020056445508978647,
+          "gbytes_per_s": 40.12268420424097,
+          "arithmetic_intensity": 0.4998779594825482,
+          "flops": 8388608,
+          "bytes": 16781312,
+          "pct_measured_hbm": null,
+          "gather_ms": 1.2790000182576478,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 4.377216100692749e-08,
+          "notes": "CPU SDPA; attention only, gather timed separately; K/V expanded",
+          "sdpa_e2e_ms": 1.6972500015981495
+        },
+        {
+          "mode": "decode",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 8,
+          "seq_len": 128,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 2.638167003169656,
+          "latency_aggregation": "min",
+          "mean_ms": 3.674497207005819,
+          "median_ms": 3.4083330538123846,
+          "min_ms": 2.638167003169656,
+          "p90_ms": 5.345124984160066,
+          "iters": 15,
+          "tflops": 0.0007949276893693056,
+          "gbytes_per_s": 0.4098845898310482,
+          "arithmetic_intensity": 1.9393939393939394,
+          "flops": 2097152,
+          "bytes": 1081344,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 0.03552011276126812,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "decode",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 8,
+          "seq_len": 128,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 0.09370798943564296,
+          "latency_aggregation": "min",
+          "mean_ms": 0.10300013236701488,
+          "median_ms": 0.10279205162078142,
+          "min_ms": 0.09370798943564296,
+          "p90_ms": 0.10866601951420307,
+          "iters": 15,
+          "tflops": 0.0223796499383896,
+          "gbytes_per_s": 45.108981907066536,
+          "arithmetic_intensity": 0.49612403100775193,
+          "flops": 2097152,
+          "bytes": 4227072,
+          "pct_measured_hbm": null,
+          "gather_ms": 0.4540419904515147,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 3.3527612686157227e-08,
+          "notes": "CPU SDPA; attention only, gather timed separately; K/V expanded",
+          "sdpa_e2e_ms": 0.5477499798871577
+        },
+        {
+          "mode": "decode",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 8,
+          "seq_len": 1024,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 8.363042026758194,
+          "latency_aggregation": "min",
+          "mean_ms": 13.06675273226574,
+          "median_ms": 12.403208995237947,
+          "min_ms": 8.363042026758194,
+          "p90_ms": 19.524708040989935,
+          "iters": 15,
+          "tflops": 0.0020061140367727453,
+          "gbytes_per_s": 1.0069752098644442,
+          "arithmetic_intensity": 1.9922178988326849,
+          "flops": 16777216,
+          "bytes": 8421376,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 0.06833637619897574,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "decode",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 8,
+          "seq_len": 1024,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 0.5714999861083925,
+          "latency_aggregation": "min",
+          "mean_ms": 0.7700832715878884,
+          "median_ms": 0.7013750146143138,
+          "min_ms": 0.5714999861083925,
+          "p90_ms": 1.0304590105079114,
+          "iters": 15,
+          "tflops": 0.029356459156270182,
+          "gbytes_per_s": 58.77025514682995,
+          "arithmetic_intensity": 0.4995121951219512,
+          "flops": 16777216,
+          "bytes": 33587200,
+          "pct_measured_hbm": null,
+          "gather_ms": 2.086707972921431,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 3.5390257835388184e-08,
+          "notes": "CPU SDPA; attention only, gather timed separately; K/V expanded",
+          "sdpa_e2e_ms": 2.6582079590298235
+        },
+        {
+          "mode": "decode",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 8,
+          "seq_len": 4096,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 39.7491249605082,
+          "latency_aggregation": "min",
+          "mean_ms": 61.22595286772897,
+          "median_ms": 59.746542014181614,
+          "min_ms": 39.7491249605082,
+          "p90_ms": 71.40787498792633,
+          "iters": 15,
+          "tflops": 0.0016883104739204805,
+          "gbytes_per_s": 0.8449796073088344,
+          "arithmetic_intensity": 1.9980487804878049,
+          "flops": 67108864,
+          "bytes": 33587200,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 0.18416023035991957,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "decode",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 8,
+          "seq_len": 4096,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": 16,
+          "dtype": "float32",
+          "latency_ms": 7.320208009332418,
+          "latency_aggregation": "min",
+          "mean_ms": 8.499216594888518,
+          "median_ms": 8.503166027367115,
+          "min_ms": 7.320208009332418,
+          "p90_ms": 9.46766702691093,
+          "iters": 15,
+          "tflops": 0.009167617083345715,
+          "gbytes_per_s": 18.339710542220406,
+          "arithmetic_intensity": 0.4998779594825482,
+          "flops": 67108864,
+          "bytes": 134250496,
+          "pct_measured_hbm": null,
+          "gather_ms": 9.925249963998795,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 3.166496753692627e-08,
+          "notes": "CPU SDPA; attention only, gather timed separately; K/V expanded",
+          "sdpa_e2e_ms": 17.245457973331213
+        }
+      ],
+      "notes": "CPU reference fallback timings. These are not GPU kernel throughput numbers.",
+      "autotuning": {
+        "performed": false,
+        "search_space": {
+          "decode": {
+            "kind": "decode",
+            "head_dim": 128,
+            "smem_limit": null,
+            "enumerated": 16,
+            "feasible": 16,
+            "candidates": [
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 2,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 4,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 8,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 2,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 4,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 8,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 2,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 4,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 8,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 2,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 4,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 8,
+                "smem_bytes": 24640
+              }
+            ]
+          },
+          "prefill": {
+            "kind": "prefill",
+            "head_dim": 128,
+            "smem_limit": null,
+            "enumerated": 36,
+            "feasible": 36,
+            "candidates": [
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 69632
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 94208
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 69632
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 94208
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 253952
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 253952
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 139264
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 139264
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 196608
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 196608
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 311296
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 311296
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 294912
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 294912
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 327680
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 425984
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 327680
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 425984
+              }
+            ]
+          }
+        },
+        "reason": "no CUDA GPU / Triton"
+      }
+    },
+    "prefill": {
+      "status": "no_gpu",
+      "device": "cpu",
+      "dtype": "float32",
+      "requested_dtype": "fp16",
+      "executed_grid": {
+        "seq_len": [
+          128,
+          512,
+          1024
+        ],
+        "batch": 1,
+        "num_heads": 8,
+        "num_kv_heads": 2,
+        "head_dim": 64
+      },
+      "rows": [
+        {
+          "mode": "prefill",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 128,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": null,
+          "dtype": "float32",
+          "latency_ms": 1.9554170430637896,
+          "latency_aggregation": "min",
+          "mean_ms": 15.8790972083807,
+          "median_ms": 8.265458047389984,
+          "min_ms": 1.9554170430637896,
+          "p90_ms": 45.25537497829646,
+          "iters": 15,
+          "tflops": 0.008646896098188717,
+          "gbytes_per_s": 0.33515101155770216,
+          "arithmetic_intensity": 25.8,
+          "flops": 16908288,
+          "bytes": 655360,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 0.34180687876150034,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "prefill",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 128,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": null,
+          "dtype": "float32",
+          "latency_ms": 0.6683749961666763,
+          "latency_aggregation": "min",
+          "mean_ms": 1.0741027266097565,
+          "median_ms": 0.9346249862574041,
+          "min_ms": 0.6683749961666763,
+          "p90_ms": 1.9933750154450536,
+          "iters": 15,
+          "tflops": 0.025297607027453026,
+          "gbytes_per_s": 1.5688438466637535,
+          "arithmetic_intensity": 16.125,
+          "flops": 16908288,
+          "bytes": 1048576,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 5.960464477539063e-08,
+          "notes": "CPU SDPA; K/V expanded for GQA"
+        },
+        {
+          "mode": "prefill",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 512,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": null,
+          "dtype": "float32",
+          "latency_ms": 16.972084005828947,
+          "latency_aggregation": "min",
+          "mean_ms": 130.25250846985728,
+          "median_ms": 82.40750001277775,
+          "min_ms": 16.972084005828947,
+          "p90_ms": 274.6690000058152,
+          "iters": 15,
+          "tflops": 0.015847184347404102,
+          "gbytes_per_s": 0.154455987791463,
+          "arithmetic_intensity": 102.6,
+          "flops": 268959744,
+          "bytes": 2621440,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 1.4171359247409812,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "prefill",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 512,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": null,
+          "dtype": "float32",
+          "latency_ms": 24.05174996238202,
+          "latency_aggregation": "min",
+          "mean_ms": 419.5457222638652,
+          "median_ms": 308.519541984424,
+          "min_ms": 24.05174996238202,
+          "p90_ms": 632.8018750064075,
+          "iters": 15,
+          "tflops": 0.01118254365776564,
+          "gbytes_per_s": 0.17438664573513668,
+          "arithmetic_intensity": 64.125,
+          "flops": 268959744,
+          "bytes": 4194304,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 4.842877388000488e-08,
+          "notes": "CPU SDPA; K/V expanded for GQA"
+        },
+        {
+          "mode": "prefill",
+          "path": "flashattn_tile_cpu_reference",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 1024,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": null,
+          "dtype": "float32",
+          "latency_ms": 110.00187502941117,
+          "latency_aggregation": "min",
+          "mean_ms": 185.69163881863156,
+          "median_ms": 168.39216701919213,
+          "min_ms": 110.00187502941117,
+          "p90_ms": 243.52125002769753,
+          "iters": 15,
+          "tflops": 0.009770655270309106,
+          "gbytes_per_s": 0.04766173302589809,
+          "arithmetic_intensity": 205.0,
+          "flops": 1074790400,
+          "bytes": 5242880,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": 1.518020715058099,
+          "max_abs_vs_ref": 0.0,
+          "notes": "PyTorch fp32 reference fallback; NOT kernel throughput"
+        },
+        {
+          "mode": "prefill",
+          "path": "sdpa",
+          "device": "cpu",
+          "batch": 1,
+          "seq_len": 1024,
+          "num_heads": 8,
+          "num_kv_heads": 2,
+          "head_dim": 64,
+          "page_size": null,
+          "dtype": "float32",
+          "latency_ms": 166.9851249898784,
+          "latency_aggregation": "min",
+          "mean_ms": 458.80549727007747,
+          "median_ms": 378.2527500297874,
+          "min_ms": 166.9851249898784,
+          "p90_ms": 1005.8211249997839,
+          "iters": 15,
+          "tflops": 0.006436443965084597,
+          "gbytes_per_s": 0.05023566021529442,
+          "arithmetic_intensity": 128.125,
+          "flops": 1074790400,
+          "bytes": 8388608,
+          "pct_measured_hbm": null,
+          "gather_ms": null,
+          "speedup_vs_sdpa": null,
+          "max_abs_vs_ref": 5.21540641784668e-08,
+          "notes": "CPU SDPA; K/V expanded for GQA"
+        }
+      ],
+      "notes": "CPU reference fallback timings. These are not GPU kernel throughput numbers.",
+      "autotuning": {
+        "performed": false,
+        "search_space": {
+          "decode": {
+            "kind": "decode",
+            "head_dim": 128,
+            "smem_limit": null,
+            "enumerated": 16,
+            "feasible": 16,
+            "candidates": [
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 2,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 4,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 8,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 2,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 4,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 8,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 2,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 4,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 8,
+                "smem_bytes": 16448
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 2,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 4,
+                "smem_bytes": 24640
+              },
+              {
+                "BLOCK_M": 1,
+                "BLOCK_N": 16,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 8,
+                "smem_bytes": 24640
+              }
+            ]
+          },
+          "prefill": {
+            "kind": "prefill",
+            "head_dim": 128,
+            "smem_limit": null,
+            "enumerated": 36,
+            "feasible": 36,
+            "candidates": [
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 69632
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 94208
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 69632
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 94208
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 253952
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 32,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 253952
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 139264
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 106496
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 139264
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 196608
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 147456
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 196608
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 311296
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 64,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 311296
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 180224
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 32,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 294912
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 229376
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 64,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 294912
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 327680
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 4,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 425984
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 2,
+                "split_k": 1,
+                "smem_bytes": 327680
+              },
+              {
+                "BLOCK_M": 128,
+                "BLOCK_N": 128,
+                "num_warps": 8,
+                "num_stages": 3,
+                "split_k": 1,
+                "smem_bytes": 425984
+              }
+            ]
+          }
+        },
+        "reason": "no CUDA GPU / Triton"
+      }
+    }
+  },
+  "autotuning": {
+    "decode": {
+      "performed": false,
+      "search_space": {
+        "decode": {
+          "kind": "decode",
+          "head_dim": 128,
+          "smem_limit": null,
+          "enumerated": 16,
+          "feasible": 16,
+          "candidates": [
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 2,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 4,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 8,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 2,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 4,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 8,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 2,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 4,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 8,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 2,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 4,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 8,
+              "smem_bytes": 24640
+            }
+          ]
+        },
+        "prefill": {
+          "kind": "prefill",
+          "head_dim": 128,
+          "smem_limit": null,
+          "enumerated": 36,
+          "feasible": 36,
+          "candidates": [
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 69632
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 94208
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 69632
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 94208
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 253952
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 253952
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 139264
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 139264
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 196608
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 196608
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 311296
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 311296
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 294912
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 294912
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 327680
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 425984
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 327680
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 425984
+            }
+          ]
+        }
+      },
+      "reason": "no CUDA GPU / Triton"
+    },
+    "prefill": {
+      "performed": false,
+      "search_space": {
+        "decode": {
+          "kind": "decode",
+          "head_dim": 128,
+          "smem_limit": null,
+          "enumerated": 16,
+          "feasible": 16,
+          "candidates": [
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 2,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 4,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 8,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 2,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 4,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 8,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 2,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 4,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 8,
+              "smem_bytes": 16448
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 2,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 4,
+              "smem_bytes": 24640
+            },
+            {
+              "BLOCK_M": 1,
+              "BLOCK_N": 16,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 8,
+              "smem_bytes": 24640
+            }
+          ]
+        },
+        "prefill": {
+          "kind": "prefill",
+          "head_dim": 128,
+          "smem_limit": null,
+          "enumerated": 36,
+          "feasible": 36,
+          "candidates": [
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 69632
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 94208
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 69632
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 94208
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 253952
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 32,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 253952
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 139264
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 106496
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 139264
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 196608
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 147456
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 196608
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 311296
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 64,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 311296
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 180224
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 32,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 294912
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 229376
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 64,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 294912
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 327680
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 4,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 425984
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 2,
+              "split_k": 1,
+              "smem_bytes": 327680
+            },
+            {
+              "BLOCK_M": 128,
+              "BLOCK_N": 128,
+              "num_warps": 8,
+              "num_stages": 3,
+              "split_k": 1,
+              "smem_bytes": 425984
+            }
+          ]
+        }
+      },
+      "reason": "no CUDA GPU / Triton"
+    }
+  },
+  "occupancy": {
+    "method": "unavailable",
+    "reason": "no CUDA device and no ncu binary on this host; no occupancy was measured"
+  },
+  "skip_reasons": []
+}
