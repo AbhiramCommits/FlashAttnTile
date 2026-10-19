@@ -17,11 +17,19 @@ from __future__ import annotations
 
 __version__ = "0.1.0"
 
+# Register torch.library custom ops on import so ``torch.ops.flashattn_tile``
+# exists for callers (and for torch.compile) right after ``import flashattn_tile``.
+from . import ops as _ops  # noqa: F401  (import for registration side effect)
+from .ops import PAGED_DECODE_OP, PREFILL_OP, paged_decode, prefill_varlen
 from .paging import PagedKVCache, allocate, append_tokens, gather_contiguous
 from .reference import ref_attention_paged, ref_attention_varlen
 
 __all__ = [
     "__version__",
+    "PAGED_DECODE_OP",
+    "PREFILL_OP",
+    "paged_decode",
+    "prefill_varlen",
     "PagedKVCache",
     "allocate",
     "append_tokens",
