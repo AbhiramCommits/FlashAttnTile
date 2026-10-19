@@ -11,7 +11,7 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "FlashAttnTile contributors" }]
 dependencies = [
-    "torch>=2.1",
+    "torch>=2.4",
     # Triton publishes Linux wheels only. On macOS the package stays importable
     # and every kernel call falls back to the PyTorch reference implementation.
     "triton>=2.1; platform_system == 'Linux'",

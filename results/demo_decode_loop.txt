@@ -1,26 +1,21 @@
 FlashAttnTile decode-loop demo
-generated_utc: 2026-10-19T08:45:02.242229+00:00
-torch 2.11.0 | device=cpu | dtype=torch.float32
+generated_utc: 2026-10-19T08:55:19.744126+00:00
+torch 2.14.1 | device=cpu | dtype=torch.float32
 GPU: none (CUDA unavailable; reference fallback)
 custom ops registered: True
 cache: 12 pages x 16 slots, KV heads=2, head_dim=64, prompt_len=24, batch=4, decode_steps=8
-inductor compile failed (BackendCompilerFailed: backend='inductor' raised:
-ImportError: cannot import name 'has_guarding_hint' from 'torch.fx.experimental.symbolic_shapes' (/opt/anaconda3/lib/python3.13/site-packages/torch/fx/experimental/symbolic_shapes.py)
-
-Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
-); retrying backend='eager'
-torch.compile: fullgraph=True, backend=eager, compile+first-call=2436.1 ms
+torch.compile: fullgraph=True, backend=inductor, compile+first-call=1966.9 ms
 
 correctness (compiled custom op vs fp32 reference, same cache state each step)
   max_abs=0.000e+00  mean_abs=0.000e+00  final_step_max_abs=0.000e+00 (tolerance 1e-06)
 
 timing
   steps=8  tokens=32
-  per-step p50=1.052 ms  p90=1.741 ms  min=0.894 ms  max=1.741 ms
-  total decode time=9.480 ms  tokens/sec=3375.63
+  per-step p50=1.436 ms  p90=2.301 ms  min=0.768 ms  max=2.301 ms
+  total decode time=11.622 ms  tokens/sec=2753.47
   final cache length: 32..32
 
 NOTE: no CUDA device. These are CPU fp32 reference-path timings, not GPU kernel
 throughput. The custom op was still traced and executed under torch.compile.
 
-environment: {"load_average": {"1m": 12.8544921875, "5m": 19.94677734375, "15m": 17.1005859375}, "cpu_count": 8}
+environment: {"load_average": {"1m": 23.046875, "5m": 61.5322265625, "15m": 45.33203125}, "cpu_count": 8}

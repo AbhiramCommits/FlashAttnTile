@@ -658,7 +658,7 @@ def main() -> int:
     parser.add_argument("--warmup", type=int, default=10)
     parser.add_argument("--iters", type=int, default=50)
     parser.add_argument("--cpu-warmup", type=int, default=3)
-    parser.add_argument("--cpu-iters", type=int, default=15)
+    parser.add_argument("--cpu-iters", type=int, default=21)
     args = parser.parse_args()
 
     torch.manual_seed(0)

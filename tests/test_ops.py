@@ -142,6 +142,16 @@ def test_backend_prefill_routing_matches_reference():
     torch.testing.assert_close(out, ref, rtol=0, atol=0)
 
 
+def test_native_fallback_is_graceful():
+    from flashattn_tile import native
+
+    if torch.cuda.is_available():
+        assert native.is_available() or native.unavailable_reason()
+    else:
+        assert not native.is_available()
+        assert "CUDA" in native.unavailable_reason()
+
+
 def test_backend_validation():
     backend = FlashAttnTileBackend(num_heads=4, num_kv_heads=2, head_dim=8, page_size=16)
     cache = _make_cache()

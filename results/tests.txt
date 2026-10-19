@@ -1,0 +1,26 @@
+.........sssssssssssssss................................ssssssssssssssss [ 72%]
+sssssssss...................                                             [100%]
+=============================== warnings summary ===============================
+tests/test_numerics.py::test_numerics_table
+  /Users/abhiramkasireddi/FlashAttnTile/tests/test_numerics.py:163: RuntimeWarning: paged_decode_attention: CUDA + Triton not available; falling back to the PyTorch reference path. Kernel throughput requires a CUDA GPU with Triton installed.
+    split = paged_decode_attention(q, cache, config={"split_k": 4})
+
+tests/test_ops.py::test_compile_fullgraph_has_zero_graph_breaks
+  /Users/abhiramkasireddi/FlashAttnTile/flashattn_tile/ops.py:54: RuntimeWarning: paged_decode_attention: CUDA + Triton not available; falling back to the PyTorch reference path. Kernel throughput requires a CUDA GPU with Triton installed.
+    return paged_decode_attention(q, cache, softmax_scale=softmax_scale,
+
+tests/test_ops.py::test_compile_prefill_fullgraph
+  /Users/abhiramkasireddi/FlashAttnTile/flashattn_tile/ops.py:89: RuntimeWarning: prefill_attention: CUDA + Triton not available; falling back to the PyTorch reference path. Kernel throughput requires a CUDA GPU with Triton installed.
+    return prefill_attention(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [12] tests/test_decode.py:49: requires CUDA + Triton (cuda=False, triton=False)
+SKIPPED [1] tests/test_decode.py:69: requires CUDA + Triton (cuda=False, triton=False)
+SKIPPED [1] tests/test_decode.py:85: requires CUDA + Triton (cuda=False, triton=False)
+SKIPPED [1] tests/test_decode.py:97: requires CUDA + Triton (cuda=False, triton=False)
+SKIPPED [24] tests/test_prefill.py:54: requires CUDA + Triton (cuda=False, triton=False)
+SKIPPED [1] tests/test_prefill.py:82: requires CUDA + Triton (cuda=False, triton=False)
+60 passed, 40 skipped, 3 warnings in 3.84s
+100 tests collected in 0.24s
+All checks passed!

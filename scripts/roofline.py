@@ -226,7 +226,8 @@ def _numerics_table() -> str:
                 mean_abs=_fmt(r.get("mean_abs"), 6),
                 max_rel=_fmt(r.get("max_rel"), 6),
                 tol=_fmt(r.get("tolerance"), 4),
-                passed="yes" if r.get("passed") else "no",
+                passed=("skipped" if r.get("status") == "skipped"
+                        else ("yes" if r.get("passed") else "no")),
                 note=r.get("note", ""),
             )
         )
@@ -324,8 +325,22 @@ def _summary(payload: dict, plot_info: dict) -> str:
     test_file = RESULTS / "tests.txt"
     lines += ["## Test suite", ""]
     if test_file.exists():
-        tail = [ln.strip() for ln in test_file.read_text().splitlines() if ln.strip()]
-        lines.append(f"Local run: `{tail[-1] if tail else 'unknown'}`")
+        import re
+
+        text = test_file.read_text()
+        pytest_line = next(
+            (ln.strip() for ln in reversed(text.splitlines())
+             if re.search(r"\d+ passed", ln)),
+            None,
+        )
+        collect_line = next(
+            (ln.strip() for ln in reversed(text.splitlines())
+             if "tests collected" in ln),
+            None,
+        )
+        lines.append(f"- pytest: `{pytest_line or 'not recorded'}`")
+        lines.append(f"- collection: `{collect_line or 'not recorded'}`")
+        lines.append(f"- ruff: `{'clean' if 'All checks passed!' in text else 'see results/tests.txt'}`")
     else:
         lines.append("_No recorded test run._")
     lines.append("")
@@ -338,6 +353,8 @@ def _summary(payload: dict, plot_info: dict) -> str:
         "- Arithmetic intensity and FLOPs use the analytic formulas in "
         "`flashattn_tile/autotune.py`; GPU latency is the median of measured CUDA-event "
         "iterations, CPU latency is the minimum (see the hardware note).",
+        "- The roof uses DRAM bandwidth. Points above it can occur for small working sets "
+        "that fit in CPU/GPU cache; the DRAM roof is not a hard ceiling for cache-resident data.",
         "",
     ]
     return "\n".join(lines)

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "schema_version": 1,
-    "updated_utc": "2026-10-19T08:40:52.072422+00:00",
+    "updated_utc": "2026-10-19T08:55:04.722515+00:00",
     "note": "No GPU autotuning was performed on this host (no CUDA device; triton not importable). Kernel wrappers use their built-in defaults until tuned_configs.json is populated by scripts/benchmark.py on a CUDA machine."
   },
   "configs": {}
