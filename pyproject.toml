@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flashattn_tile"
+version = "0.1.0"
+description = "Fused paged-attention kernels for LLM prefill and decode (Triton + optional CUDA C++)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "FlashAttnTile contributors" }]
+dependencies = [
+    "torch>=2.1",
+    # Triton publishes Linux wheels only. On macOS the package stays importable
+    # and every kernel call falls back to the PyTorch reference implementation.
+    "triton>=2.1; platform_system == 'Linux'",
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "pytest>=7.0",
+]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+include = ["flashattn_tile*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "gpu: requires a CUDA GPU and a working Triton install",
+    "native: requires a built CUDA C++ extension",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]

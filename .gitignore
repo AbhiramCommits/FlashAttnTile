@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Native extension build output
+*.so
+*.dylib
+*.o
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# Large / raw benchmark artifacts. Curated artifacts in results/*.json,
+# results/*.csv, results/*.png and results/*.md are committed on purpose.
+results/raw/
+
+# Local scratch
+*.log
+.DS_Store
