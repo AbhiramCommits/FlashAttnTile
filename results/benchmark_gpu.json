@@ -1,0 +1,48 @@
+{
+  "generated_utc": "2026-10-21T05:01:52.876280+00:00",
+  "environment": {
+    "timestamp_utc": "2026-10-21T05:01:36.404288+00:00",
+    "torch_version": "2.8.0+cu128",
+    "torch_cuda_version": "12.8",
+    "triton_version": "3.4.0",
+    "triton_available": true,
+    "python_version": "3.12.3",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "cuda_available": true,
+    "mps_available": false,
+    "has_gpu": true,
+    "device_count": 1,
+    "gpu_name": "NVIDIA L4",
+    "compute_capability": "8.9",
+    "sm_count": 58,
+    "total_hbm_bytes": 23661248512,
+    "total_hbm_gib": 22.036,
+    "l2_cache_bytes": 50331648,
+    "max_shared_memory_per_block": 49152,
+    "max_shared_memory_per_multiprocessor": 102400,
+    "regs_per_multiprocessor": 65536,
+    "max_threads_per_multiprocessor": 0,
+    "cpu_count": 48,
+    "torch_num_threads": 24,
+    "load_average": {
+      "1m": 3.82275390625,
+      "5m": 2.84375,
+      "15m": 1.7978515625
+    },
+    "measured_hbm_bandwidth_gbs": 231.33425088173308,
+    "measured_host_bandwidth_gbs": 28.38404358189622,
+    "peak_fp16_tflops_spec": 30.3,
+    "peak_fp16_tflops_source": "NVIDIA L4 datasheet, dense FP16 tensor core, no sparsity",
+    "peak_hbm_gbs_spec": 300.0
+  },
+  "peak_fp16_tflops_spec": 30.3,
+  "peak_hbm_gbs_spec": 300.0,
+  "baselines": {
+    "sdpa_flash": "torch built-in flash backend (FlashAttention-style)",
+    "flash_attn": "not installed (needs long source build for torch 2.8/cu128)",
+    "vllm": "not installed (heavy install, torch-pin risk)"
+  },
+  "timing": "triton.testing.do_bench, warmup=25ms rep=100ms, median, L2 flushed"
+}

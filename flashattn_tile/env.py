@@ -38,6 +38,23 @@ PEAK_FP16_SPEC_TFLOPS: dict[tuple[int, int], tuple[float, str]] = {
     (10, 0): (1650.0, "NVIDIA H200 SXM datasheet, dense FP16 tensor core, no sparsity"),
 }
 
+# Name-keyed overrides. Compute capability alone is not enough to distinguish a
+# product (8.9 is both the L4 and the L40S, which differ ~12x in tensor-core
+# throughput), so the product name wins when it is known.
+PEAK_FP16_SPEC_TFLOPS_BY_NAME: dict[str, tuple[float, str]] = {
+    "NVIDIA L4": (30.3, "NVIDIA L4 datasheet, dense FP16 tensor core, no sparsity"),
+}
+
+# Peak HBM bandwidth by product name (datasheet, not measured). Used only for
+# "% of peak bandwidth" reporting; measured copy bandwidth stays separate.
+PEAK_HBM_SPEC_GBS_BY_NAME: dict[str, float] = {
+    "NVIDIA L4": 300.0,
+    "NVIDIA A10": 600.0,
+    "NVIDIA A100": 2039.0,
+    "NVIDIA H100": 3350.0,
+    "NVIDIA H200": 4800.0,
+}
+
 
 def _triton_version() -> str | None:
     try:
@@ -196,6 +213,9 @@ def peak_fp16_tflops_spec() -> tuple[float | None, str]:
     if not torch.cuda.is_available():
         return None, "no CUDA device detected; spec table not applicable"
     p = torch.cuda.get_device_properties(0)
+    name = torch.cuda.get_device_name(0)
+    if name in PEAK_FP16_SPEC_TFLOPS_BY_NAME:
+        return PEAK_FP16_SPEC_TFLOPS_BY_NAME[name]
     key = (int(p.major), int(p.minor))
     if key not in PEAK_FP16_SPEC_TFLOPS:
         return None, (
@@ -204,6 +224,17 @@ def peak_fp16_tflops_spec() -> tuple[float | None, str]:
         )
     value, source = PEAK_FP16_SPEC_TFLOPS[key]
     return value, source
+
+
+def peak_hbm_gbs_spec() -> float | None:
+    """Return the datasheet peak HBM bandwidth (GB/s) for the current GPU.
+
+    This is a vendor spec-sheet ceiling, never a measurement. Returns ``None``
+    on a CPU-only host or when the product is not in the table.
+    """
+    if not torch.cuda.is_available():
+        return None
+    return PEAK_HBM_SPEC_GBS_BY_NAME.get(torch.cuda.get_device_name(0))
 
 
 def probe(include_bandwidth: bool = True) -> dict:
@@ -215,6 +246,7 @@ def probe(include_bandwidth: bool = True) -> dict:
         tflops, source = peak_fp16_tflops_spec()
         info["peak_fp16_tflops_spec"] = tflops
         info["peak_fp16_tflops_source"] = source
+        info["peak_hbm_gbs_spec"] = peak_hbm_gbs_spec()
     return info
 
 
