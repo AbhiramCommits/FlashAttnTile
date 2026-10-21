@@ -127,6 +127,99 @@ if HAS_TRITON:
         )
 
     @triton.jit
+    def _decode_paged_grouped_kernel(
+        Q,
+        KCache,
+        VCache,
+        PageTable,
+        SeqLens,
+        Out,
+        softmax_scale,
+        stride_qb,
+        stride_qh,
+        stride_qd,
+        stride_kp,
+        stride_kt,
+        stride_kh,
+        stride_kd,
+        stride_vp,
+        stride_vt,
+        stride_vh,
+        stride_vd,
+        stride_pb,
+        stride_pp,
+        stride_ob,
+        stride_oh,
+        stride_od,
+        PAGE_SIZE: tl.constexpr,
+        HEAD_DIM: tl.constexpr,
+        GROUP: tl.constexpr,
+    ):
+        # One program per (batch, KV head); it computes the attention for every
+        # query head in the GQA group at once, so each K/V page is loaded from
+        # HBM a single time instead of once per query head.
+        b = tl.program_id(0)
+        kv_head = tl.program_id(1)
+        seq_len = tl.load(SeqLens + b)
+
+        offs_d = tl.arange(0, HEAD_DIM)
+        offs_g = tl.arange(0, GROUP)
+        q = tl.load(
+            Q
+            + b * stride_qb
+            + (kv_head * GROUP + offs_g)[:, None] * stride_qh
+            + offs_d[None, :] * stride_qd
+        ).to(tl.float32)  # [GROUP, HEAD_DIM]
+
+        m_i = tl.full([GROUP], -float("inf"), tl.float32)
+        l_i = tl.zeros([GROUP], tl.float32)
+        acc = tl.zeros([GROUP, HEAD_DIM], tl.float32)
+
+        num_pages = (seq_len + PAGE_SIZE - 1) // PAGE_SIZE
+        for page_i in range(0, num_pages):
+            phys = tl.load(PageTable + b * stride_pb + page_i * stride_pp).to(tl.int64)
+            offs_n = tl.arange(0, PAGE_SIZE)
+            logical = page_i * PAGE_SIZE + offs_n
+            mask = logical < seq_len
+
+            k = tl.load(
+                KCache
+                + phys * stride_kp
+                + offs_n[:, None] * stride_kt
+                + kv_head * stride_kh
+                + offs_d[None, :] * stride_kd,
+                mask=mask[:, None], other=0.0,
+            ).to(tl.float32)  # [PAGE_SIZE, HEAD_DIM]
+            scores = tl.sum(q[:, None, :] * k[None, :, :], axis=2) * softmax_scale
+            scores = tl.where(mask[None, :], scores, -float("inf"))
+
+            m_new = tl.maximum(m_i, tl.max(scores, 1))
+            alpha = tl.exp(m_i - m_new)
+            p = tl.exp(scores - m_new[:, None])
+            l_i = l_i * alpha + tl.sum(p, 1)
+            acc = acc * alpha[:, None]
+
+            v = tl.load(
+                VCache
+                + phys * stride_vp
+                + offs_n[:, None] * stride_vt
+                + kv_head * stride_vh
+                + offs_d[None, :] * stride_vd,
+                mask=mask[:, None], other=0.0,
+            ).to(tl.float32)  # [PAGE_SIZE, HEAD_DIM]
+            acc += tl.sum(p[:, :, None] * v[None, :, :], axis=1)
+            m_i = m_new
+
+        out = acc / l_i[:, None]
+        tl.store(
+            Out
+            + b * stride_ob
+            + (kv_head * GROUP + offs_g)[:, None] * stride_oh
+            + offs_d[None, :] * stride_od,
+            out.to(Out.dtype.element_ty),
+        )
+
+    @triton.jit
     def _decode_paged_split_kernel(
         Q,
         KCache,
@@ -356,6 +449,7 @@ if HAS_TRITON:
 
 else:  # pragma: no cover - CPU-only hosts
     _decode_paged_kernel = None
+    _decode_paged_grouped_kernel = None
     _decode_paged_split_kernel = None
     _decode_reduce_kernel = None
     _decode_paged_quant_kernel = None
@@ -441,6 +535,7 @@ def paged_decode_attention(
     cache: PagedKVCache,
     softmax_scale: float | None = None,
     config: dict | None = None,
+    grouped: bool = False,
 ) -> torch.Tensor:
     """Paged decode attention for one query per sequence.
 
@@ -450,6 +545,12 @@ def paged_decode_attention(
     cache: :class:`PagedKVCache` with ``[pages, page_size, kv_heads, dim]`` K/V.
     softmax_scale: defaults to ``head_dim ** -0.5``.
     config: ``split_k`` (1 disables split-K), ``num_warps``, ``num_stages``.
+    grouped: when True and ``num_heads > num_kv_heads`` (GQA/MQA), process each
+        GQA group in a single program so every K/V page is read from HBM once
+        per group instead of once per query head. Requires a power-of-two group
+        size and ``split_k == 1``. Note: this elementwise implementation only
+        wins at high batch with long contexts (see results/grouped_decode_bench.csv);
+        a tensor-core (tl.dot) variant is needed for small groups / MQA.
 
     Returns
     -------
@@ -487,6 +588,18 @@ def paged_decode_attention(
     group = q.shape[1] // cache.num_kv_heads
 
     if split_k == 1:
+        if grouped and group > 1 and group & (group - 1) == 0:
+            _decode_paged_grouped_kernel[(cache.batch_size, cache.num_kv_heads)](
+                q, k_cache, v_cache, page_table, seq_lens, out, scale,
+                q.stride(0), q.stride(1), q.stride(2),
+                k_cache.stride(0), k_cache.stride(1), k_cache.stride(2), k_cache.stride(3),
+                v_cache.stride(0), v_cache.stride(1), v_cache.stride(2), v_cache.stride(3),
+                page_table.stride(0), page_table.stride(1),
+                out.stride(0), out.stride(1), out.stride(2),
+                cache.page_size, cache.head_dim, group,
+                num_warps=cfg["num_warps"], num_stages=cfg["num_stages"],
+            )
+            return out
         _decode_paged_kernel[grid](
             q, k_cache, v_cache, page_table, seq_lens, out, scale,
             q.stride(0), q.stride(1), q.stride(2),

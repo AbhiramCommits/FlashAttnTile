@@ -95,6 +95,19 @@ def test_mqa_decode():
 
 
 @requires_gpu
+@pytest.mark.parametrize("num_heads,num_kv_heads", [(8, 8), (8, 2), (8, 1)])
+def test_grouped_decode_matches_reference(num_heads, num_kv_heads):
+    torch.manual_seed(28)
+    page_size, batch, head_dim = 16, 4, 64
+    lens = [1, 17, 255, 1000]
+    cache = _build_cache(batch, lens, page_size, num_kv_heads, head_dim, torch.float16, "cuda")
+    q = (torch.randn(batch, num_heads, head_dim, device="cuda") * 0.2).to(torch.float16)
+    out = paged_decode_attention(q, cache, grouped=True)
+    ref = ref_attention_paged(q, cache.k_cache, cache.v_cache, cache.page_table, cache.seq_lens)
+    assert (out.float() - ref.float()).abs().max().item() <= FP16_MAX_ABS_TOL
+
+
+@requires_gpu
 def test_split_k_with_more_splits_than_pages():
     """Empty splits must contribute nothing to the LSE merge."""
     torch.manual_seed(24)
