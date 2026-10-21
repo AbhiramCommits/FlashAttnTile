@@ -1,0 +1,471 @@
+{
+  "generated_utc": "2026-10-21T05:11:54.474180+00:00",
+  "timing": "triton.testing.do_bench, warmup=25ms rep=100ms, median, L2 flushed",
+  "records": [
+    {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq512_Lk512_c1",
+      "default_ms": 0.2724800109863281,
+      "winner_ms": 0.2685759961605072,
+      "gain_vs_default": 1.0145359782021912,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq1024_Lk1024_c1",
+      "default_ms": 0.4548799991607666,
+      "winner_ms": 0.45046401023864746,
+      "gain_vs_default": 1.0098032003040145,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq2048_Lk2048_c1",
+      "default_ms": 1.2004159688949585,
+      "winner_ms": 1.2199520468711853,
+      "gain_vs_default": 0.9839861918947298,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq4096_Lk4096_c1",
+      "default_ms": 4.439040184020996,
+      "winner_ms": 4.726175785064697,
+      "gain_vs_default": 0.9392456789374857,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq8192_Lk8192_c1",
+      "default_ms": 16.684064865112305,
+      "winner_ms": 17.368480682373047,
+      "gain_vs_default": 0.9605943761128546,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H8_Hkv2_D128_Lq2048_Lk2048_c1",
+      "default_ms": 0.47734400629997253,
+      "winner_ms": 0.45612800121307373,
+      "gain_vs_default": 1.046513270464595,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H16_Hkv4_D128_Lq2048_Lk2048_c1",
+      "default_ms": 0.6909760236740112,
+      "winner_ms": 0.7007039785385132,
+      "gain_vs_default": 0.9861168836449424,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H64_Hkv16_D128_Lq2048_Lk2048_c1",
+      "default_ms": 2.3963359594345093,
+      "winner_ms": 2.494223952293396,
+      "gain_vs_default": 0.9607541284458918,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv32_D128_Lq2048_Lk2048_c1",
+      "default_ms": 1.2842880487442017,
+      "winner_ms": 1.2238240242004395,
+      "gain_vs_default": 1.0494058159899788,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv1_D128_Lq2048_Lk2048_c1",
+      "default_ms": 1.2262400388717651,
+      "winner_ms": 1.163312017917633,
+      "gain_vs_default": 1.0540938458340483,
+      "num_candidates": 4,
+      "winner": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L128_sk1",
+      "default_ms": 0.18433599919080734,
+      "winner_ms": 0.18041600286960602,
+      "gain_vs_default": 1.021727542229358,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L1024_sk1",
+      "default_ms": 0.2913919985294342,
+      "winner_ms": 0.2274560034275055,
+      "gain_vs_default": 1.281091701860955,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L4096_sk1",
+      "default_ms": 0.6059040129184723,
+      "winner_ms": 0.32600000500679016,
+      "gain_vs_default": 1.8586012380762145,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L16384_sk1",
+      "default_ms": 1.8755199909210205,
+      "winner_ms": 0.7247359752655029,
+      "gain_vs_default": 2.5878665540701693,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L128_sk1",
+      "default_ms": 0.20451200008392334,
+      "winner_ms": 0.20364799350500107,
+      "gain_vs_default": 1.0042426471484045,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L1024_sk1",
+      "default_ms": 0.4278720021247864,
+      "winner_ms": 0.40726399421691895,
+      "gain_vs_default": 1.0506011044445316,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L4096_sk1",
+      "default_ms": 1.2283680438995361,
+      "winner_ms": 1.1429120302200317,
+      "gain_vs_default": 1.0747704210122389,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 4
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L16384_sk1",
+      "default_ms": 5.225008010864258,
+      "winner_ms": 4.416655778884888,
+      "gain_vs_default": 1.1830235980453658,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L128_sk1",
+      "default_ms": 0.28219200670719147,
+      "winner_ms": 0.28113599121570587,
+      "gain_vs_default": 1.0037562443958852,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L1024_sk1",
+      "default_ms": 1.1254080533981323,
+      "winner_ms": 1.134719967842102,
+      "gain_vs_default": 0.9917936453857614,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 4
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L4096_sk1",
+      "default_ms": 5.256288051605225,
+      "winner_ms": 4.37388801574707,
+      "gain_vs_default": 1.2017427132750764,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 4
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L16384_sk1",
+      "default_ms": 22.54036808013916,
+      "winner_ms": 17.999296188354492,
+      "gain_vs_default": 1.2522916365320291,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L128_sk1",
+      "default_ms": 0.6250880062580109,
+      "winner_ms": 0.620959997177124,
+      "gain_vs_default": 1.0066477858471603,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L1024_sk1",
+      "default_ms": 5.348896026611328,
+      "winner_ms": 4.454847812652588,
+      "gain_vs_default": 1.2006910789229384,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 2
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L4096_sk1",
+      "default_ms": 29.4385929107666,
+      "winner_ms": 18.57916831970215,
+      "gain_vs_default": 1.5844946557456316,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L16384_sk1",
+      "default_ms": 124.9012451171875,
+      "winner_ms": 86.50975799560547,
+      "gain_vs_default": 1.443782158349492,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P8_L4096_sk1",
+      "default_ms": 7.978192090988159,
+      "winner_ms": 6.930784225463867,
+      "gain_vs_default": 1.151124004362463,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 8,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 4
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P32_L4096_sk1",
+      "default_ms": 3.485439896583557,
+      "winner_ms": 3.069119930267334,
+      "gain_vs_default": 1.1356479954434233,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P64_L4096_sk1",
+      "default_ms": 3.565168023109436,
+      "winner_ms": 2.603775978088379,
+      "gain_vs_default": 1.3692299387933078,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 64,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H8_Hkv2_D128_P16_L4096_sk1",
+      "default_ms": 1.3283519744873047,
+      "winner_ms": 1.1667520403862,
+      "gain_vs_default": 1.1385040938498077,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      }
+    },
+    {
+      "kind": "decode",
+      "signature": "B32_H64_Hkv16_D128_P16_L4096_sk1",
+      "default_ms": 11.145343780517578,
+      "winner_ms": 9.110079765319824,
+      "gain_vs_default": 1.2234079248071548,
+      "num_candidates": 16,
+      "winner": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 4
+      }
+    }
+  ]
+}

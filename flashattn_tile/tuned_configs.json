@@ -1,8 +1,505 @@
 {
   "_meta": {
     "schema_version": 1,
-    "updated_utc": "2026-10-19T08:55:04.722515+00:00",
-    "note": "No GPU autotuning was performed on this host (no CUDA device; triton not importable). Kernel wrappers use their built-in defaults until tuned_configs.json is populated by scripts/benchmark.py on a CUDA machine."
+    "updated_utc": "2026-10-21T05:11:54.473139+00:00",
+    "note": "Autotuned on NVIDIA L4 with triton.testing.do_bench (warmup=25ms rep=100ms, median, L2 flushed). Winners are keyed by the kernel signature strings in flashattn_tile/kernels/*.py; wrappers read them automatically."
   },
-  "configs": {}
+  "configs": {
+    "prefill:B1_H32_Hkv8_D128_Lq512_Lk512_c1": {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq512_Lk512_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.2685759961605072,
+        "default_ms": 0.2724800109863281
+      },
+      "recorded_utc": "2026-10-21T05:10:27.156658+00:00"
+    },
+    "prefill:B1_H32_Hkv8_D128_Lq1024_Lk1024_c1": {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq1024_Lk1024_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.45046401023864746,
+        "default_ms": 0.4548799991607666
+      },
+      "recorded_utc": "2026-10-21T05:10:27.733987+00:00"
+    },
+    "prefill:B1_H32_Hkv8_D128_Lq2048_Lk2048_c1": {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq2048_Lk2048_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 1.2199520468711853,
+        "default_ms": 1.2004159688949585
+      },
+      "recorded_utc": "2026-10-21T05:10:28.370892+00:00"
+    },
+    "prefill:B1_H32_Hkv8_D128_Lq4096_Lk4096_c1": {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq4096_Lk4096_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 4.726175785064697,
+        "default_ms": 4.439040184020996
+      },
+      "recorded_utc": "2026-10-21T05:10:29.135582+00:00"
+    },
+    "prefill:B1_H32_Hkv8_D128_Lq8192_Lk8192_c1": {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv8_D128_Lq8192_Lk8192_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 17.368480682373047,
+        "default_ms": 16.684064865112305
+      },
+      "recorded_utc": "2026-10-21T05:10:30.356254+00:00"
+    },
+    "prefill:B1_H8_Hkv2_D128_Lq2048_Lk2048_c1": {
+      "kind": "prefill",
+      "signature": "B1_H8_Hkv2_D128_Lq2048_Lk2048_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.45612800121307373,
+        "default_ms": 0.47734400629997253
+      },
+      "recorded_utc": "2026-10-21T05:10:30.930602+00:00"
+    },
+    "prefill:B1_H16_Hkv4_D128_Lq2048_Lk2048_c1": {
+      "kind": "prefill",
+      "signature": "B1_H16_Hkv4_D128_Lq2048_Lk2048_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.7007039785385132,
+        "default_ms": 0.6909760236740112
+      },
+      "recorded_utc": "2026-10-21T05:10:31.530954+00:00"
+    },
+    "prefill:B1_H64_Hkv16_D128_Lq2048_Lk2048_c1": {
+      "kind": "prefill",
+      "signature": "B1_H64_Hkv16_D128_Lq2048_Lk2048_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 2.494223952293396,
+        "default_ms": 2.3963359594345093
+      },
+      "recorded_utc": "2026-10-21T05:10:32.242137+00:00"
+    },
+    "prefill:B1_H32_Hkv32_D128_Lq2048_Lk2048_c1": {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv32_D128_Lq2048_Lk2048_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 1.2238240242004395,
+        "default_ms": 1.2842880487442017
+      },
+      "recorded_utc": "2026-10-21T05:10:33.733972+00:00"
+    },
+    "prefill:B1_H32_Hkv1_D128_Lq2048_Lk2048_c1": {
+      "kind": "prefill",
+      "signature": "B1_H32_Hkv1_D128_Lq2048_Lk2048_c1",
+      "config": {
+        "BLOCK_M": 32,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 1.163312017917633,
+        "default_ms": 1.2262400388717651
+      },
+      "recorded_utc": "2026-10-21T05:10:35.236498+00:00"
+    },
+    "decode:B1_H32_Hkv8_D128_P16_L128_sk1": {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L128_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.18041600286960602,
+        "default_ms": 0.18433599919080734
+      },
+      "recorded_utc": "2026-10-21T05:10:38.658672+00:00"
+    },
+    "decode:B1_H32_Hkv8_D128_P16_L1024_sk1": {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L1024_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 0.2274560034275055,
+        "default_ms": 0.2913919985294342
+      },
+      "recorded_utc": "2026-10-21T05:10:42.400393+00:00"
+    },
+    "decode:B1_H32_Hkv8_D128_P16_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 0.32600000500679016,
+        "default_ms": 0.6059040129184723
+      },
+      "recorded_utc": "2026-10-21T05:10:44.346787+00:00"
+    },
+    "decode:B1_H32_Hkv8_D128_P16_L16384_sk1": {
+      "kind": "decode",
+      "signature": "B1_H32_Hkv8_D128_P16_L16384_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 0.7247359752655029,
+        "default_ms": 1.8755199909210205
+      },
+      "recorded_utc": "2026-10-21T05:10:46.487648+00:00"
+    },
+    "decode:B8_H32_Hkv8_D128_P16_L128_sk1": {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L128_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.20364799350500107,
+        "default_ms": 0.20451200008392334
+      },
+      "recorded_utc": "2026-10-21T05:10:48.367165+00:00"
+    },
+    "decode:B8_H32_Hkv8_D128_P16_L1024_sk1": {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L1024_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 0.40726399421691895,
+        "default_ms": 0.4278720021247864
+      },
+      "recorded_utc": "2026-10-21T05:10:50.324011+00:00"
+    },
+    "decode:B8_H32_Hkv8_D128_P16_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 4
+      },
+      "metrics": {
+        "latency_ms": 1.1429120302200317,
+        "default_ms": 1.2283680438995361
+      },
+      "recorded_utc": "2026-10-21T05:10:52.512630+00:00"
+    },
+    "decode:B8_H32_Hkv8_D128_P16_L16384_sk1": {
+      "kind": "decode",
+      "signature": "B8_H32_Hkv8_D128_P16_L16384_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 4.416655778884888,
+        "default_ms": 5.225008010864258
+      },
+      "recorded_utc": "2026-10-21T05:10:55.202125+00:00"
+    },
+    "decode:B32_H32_Hkv8_D128_P16_L128_sk1": {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L128_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.28113599121570587,
+        "default_ms": 0.28219200670719147
+      },
+      "recorded_utc": "2026-10-21T05:10:57.115517+00:00"
+    },
+    "decode:B32_H32_Hkv8_D128_P16_L1024_sk1": {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L1024_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 4
+      },
+      "metrics": {
+        "latency_ms": 1.134719967842102,
+        "default_ms": 1.1254080533981323
+      },
+      "recorded_utc": "2026-10-21T05:10:59.290614+00:00"
+    },
+    "decode:B32_H32_Hkv8_D128_P16_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 4
+      },
+      "metrics": {
+        "latency_ms": 4.37388801574707,
+        "default_ms": 5.256288051605225
+      },
+      "recorded_utc": "2026-10-21T05:11:01.950904+00:00"
+    },
+    "decode:B32_H32_Hkv8_D128_P16_L16384_sk1": {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P16_L16384_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 17.999296188354492,
+        "default_ms": 22.54036808013916
+      },
+      "recorded_utc": "2026-10-21T05:11:06.620870+00:00"
+    },
+    "decode:B128_H32_Hkv8_D128_P16_L128_sk1": {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L128_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 1
+      },
+      "metrics": {
+        "latency_ms": 0.620959997177124,
+        "default_ms": 0.6250880062580109
+      },
+      "recorded_utc": "2026-10-21T05:11:08.666312+00:00"
+    },
+    "decode:B128_H32_Hkv8_D128_P16_L1024_sk1": {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L1024_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 2
+      },
+      "metrics": {
+        "latency_ms": 4.454847812652588,
+        "default_ms": 5.348896026611328
+      },
+      "recorded_utc": "2026-10-21T05:11:11.335189+00:00"
+    },
+    "decode:B128_H32_Hkv8_D128_P16_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 18.57916831970215,
+        "default_ms": 29.4385929107666
+      },
+      "recorded_utc": "2026-10-21T05:11:16.386651+00:00"
+    },
+    "decode:B128_H32_Hkv8_D128_P16_L16384_sk1": {
+      "kind": "decode",
+      "signature": "B128_H32_Hkv8_D128_P16_L16384_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 86.50975799560547,
+        "default_ms": 124.9012451171875
+      },
+      "recorded_utc": "2026-10-21T05:11:34.718727+00:00"
+    },
+    "decode:B32_H32_Hkv8_D128_P8_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P8_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 8,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 4
+      },
+      "metrics": {
+        "latency_ms": 6.930784225463867,
+        "default_ms": 7.978192090988159
+      },
+      "recorded_utc": "2026-10-21T05:11:39.555721+00:00"
+    },
+    "decode:B32_H32_Hkv8_D128_P32_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P32_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 32,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 3.069119930267334,
+        "default_ms": 3.485439896583557
+      },
+      "recorded_utc": "2026-10-21T05:11:44.100832+00:00"
+    },
+    "decode:B32_H32_Hkv8_D128_P64_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B32_H32_Hkv8_D128_P64_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 64,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 2.603775978088379,
+        "default_ms": 3.565168023109436
+      },
+      "recorded_utc": "2026-10-21T05:11:49.088077+00:00"
+    },
+    "decode:B32_H8_Hkv2_D128_P16_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B32_H8_Hkv2_D128_P16_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 2,
+        "split_k": 8
+      },
+      "metrics": {
+        "latency_ms": 1.1667520403862,
+        "default_ms": 1.3283519744873047
+      },
+      "recorded_utc": "2026-10-21T05:11:51.248416+00:00"
+    },
+    "decode:B32_H64_Hkv16_D128_P16_L4096_sk1": {
+      "kind": "decode",
+      "signature": "B32_H64_Hkv16_D128_P16_L4096_sk1",
+      "config": {
+        "BLOCK_M": 1,
+        "BLOCK_N": 16,
+        "num_warps": 4,
+        "num_stages": 3,
+        "split_k": 4
+      },
+      "metrics": {
+        "latency_ms": 9.110079765319824,
+        "default_ms": 11.145343780517578
+      },
+      "recorded_utc": "2026-10-21T05:11:54.473124+00:00"
+    }
+  }
 }
