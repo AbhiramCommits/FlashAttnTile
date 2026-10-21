@@ -153,11 +153,11 @@ No GPU was available, so this repository contains **no measured** kernel latency
 
 ## Limitations and next steps
 
-- **GPU paths unexecuted.** The Triton prefill/decode/quantised kernels and the CUDA C++ baseline have not been compiled or validated on this machine. GPU-gated tests are written but skipped; treat GPU correctness as unverified until run on hardware.
+- **GPU paths unexecuted on the original CPU-only build host.** The Triton prefill/decode/quantised kernels and the CUDA C++ baseline were not compiled or validated when the results in this README were recorded. The CUDA C++ baseline has since been built with nvcc and parity-checked against the Triton decode kernel on an NVIDIA L4 (see the next bullet).
 - No backward pass; this is inference-only.
 - Decode assumes one query per sequence; speculative/multi-token decode is not implemented.
 - FP8/INT8 scales are per `(page, KV-head)` only; no per-token or per-channel scales.
-- The CUDA C++ baseline is intentionally simple (one block per `(batch, head)`, `page_size ≤ 32`, `head_dim ∈ {64,128}`) and was not built here.
+- The CUDA C++ baseline is intentionally simple (one block per `(batch, head)`, `page_size ≤ 32`, `head_dim ∈ {64,128}`). It builds via `flashattn_tile.native` on a CUDA host and matches the Triton decode kernel and the fp32 reference to ≤2e-5 max abs error across fp16/bf16, GQA/MQA and page sizes 16/32 (verified on an NVIDIA L4; see `tests/test_decode.py::test_native_decode_matches_triton_and_reference`).
 - The backend is a vLLM-shaped shim, not a vLLM plugin; there is no end-to-end serving integration test.
 - CPU timings were taken on a heavily loaded shared host and use min-of-iterations; they are noisy and not a substitute for GPU kernel measurements.
 - Architectures other than the host CPU were not validated. Autotuning and occupancy require a real device.

@@ -107,6 +107,27 @@ def test_grouped_decode_matches_reference(num_heads, num_kv_heads):
     assert (out.float() - ref.float()).abs().max().item() <= FP16_MAX_ABS_TOL
 
 
+@pytest.mark.native
+@pytest.mark.parametrize("dtype", [torch.float16, torch.bfloat16])
+@pytest.mark.parametrize("head_dim,num_heads,num_kv_heads", [(64, 8, 2), (128, 8, 8), (128, 8, 1)])
+def test_native_decode_matches_triton_and_reference(dtype, head_dim, num_heads, num_kv_heads):
+    from flashattn_tile import native
+
+    if not native.is_available():
+        pytest.skip(f"native CUDA extension unavailable: {native.unavailable_reason()}")
+    torch.manual_seed(29)
+    batch, page_size = 4, 16
+    lens = [1, 17, 255, 1000]
+    cache = _build_cache(batch, lens, page_size, num_kv_heads, head_dim, dtype, "cuda")
+    q = (torch.randn(batch, num_heads, head_dim, device="cuda") * 0.2).to(dtype)
+    ref = ref_attention_paged(q, cache.k_cache, cache.v_cache, cache.page_table, cache.seq_lens)
+    tri = paged_decode_attention(q, cache)
+    nat = native.paged_decode_attention(q, cache.k_cache, cache.v_cache,
+                                        cache.page_table, cache.seq_lens, page_size)
+    assert (nat.float() - tri.float()).abs().max().item() <= FP16_MAX_ABS_TOL
+    assert (nat.float() - ref.float()).abs().max().item() <= FP16_MAX_ABS_TOL
+
+
 @requires_gpu
 def test_split_k_with_more_splits_than_pages():
     """Empty splits must contribute nothing to the LSE merge."""
