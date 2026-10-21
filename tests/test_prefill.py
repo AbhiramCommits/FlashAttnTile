@@ -15,12 +15,12 @@ from conftest import requires_gpu
 from flashattn_tile.kernels.prefill import HAS_TRITON, prefill_attention
 from flashattn_tile.reference import ref_attention_varlen
 
-# Provisional GPU tolerances (fp16 / bf16 inputs, fp32 accumulation).
-FP16_MAX_ABS_TOL = 2e-2
-FP16_MAX_REL_TOL = 2e-2
-BF16_MAX_ABS_TOL = 4e-2
-BF16_MAX_REL_TOL = 4e-2
-MEAN_REL_TOL = 5e-3
+# FlashAttention-style kernels accumulate in fp32 but form QK^T and PV in the
+# input dtype. A max-rel metric inflates on near-zero outputs, so correctness is
+# asserted with torch.testing.assert_close (|diff| <= atol + rtol*|ref|), the
+# convention used by the flash-attention test suite.
+FP16_TOL = {"atol": 1e-2, "rtol": 1e-2}
+BF16_TOL = {"atol": 1.6e-2, "rtol": 1.6e-2}
 
 RAGGED_LENS = [1, 7, 33, 64, 129]
 
@@ -47,8 +47,8 @@ def _errors(out, ref):
 
 def _tolerances(dtype):
     if dtype == torch.float16:
-        return FP16_MAX_ABS_TOL, FP16_MAX_REL_TOL
-    return BF16_MAX_ABS_TOL, BF16_MAX_REL_TOL
+        return FP16_TOL["atol"], FP16_TOL["rtol"]
+    return BF16_TOL["atol"], BF16_TOL["rtol"]
 
 
 @requires_gpu
@@ -67,16 +67,13 @@ def test_prefill_kernel_matches_reference(head_dim, num_heads, num_kv_heads, cau
     ref = ref_attention_varlen(q, k, v, cu, cu, causal=causal)
 
     assert out.shape == q.shape and out.dtype == dtype
-    max_abs, mean_abs, max_rel, mean_rel = _errors(out, ref)
+    max_abs, mean_abs, _, _ = _errors(out, ref)
     atol, rtol = _tolerances(dtype)
     print(
         f"dtype={dtype} D={head_dim} H={num_heads}/{num_kv_heads} causal={causal} "
-        f"max_abs={max_abs:.5f} mean_abs={mean_abs:.6f} max_rel={max_rel:.5f} "
-        f"mean_rel={mean_rel:.6f}"
+        f"max_abs={max_abs:.5f} mean_abs={mean_abs:.6f}"
     )
-    assert max_abs <= atol, f"max abs error {max_abs} > {atol}"
-    assert max_rel <= rtol, f"max rel error {max_rel} > {rtol}"
-    assert mean_rel <= MEAN_REL_TOL, f"mean rel error {mean_rel} > {MEAN_REL_TOL}"
+    torch.testing.assert_close(out, ref, rtol=rtol, atol=atol)
 
 
 @requires_gpu
@@ -89,7 +86,7 @@ def test_prefill_explicit_config_and_odd_block_sizes():
         config={"BLOCK_M": 128, "BLOCK_N": 32, "num_warps": 4, "num_stages": 2},
     )
     ref = ref_attention_varlen(q, k, v, cu, cu, causal=True)
-    torch.testing.assert_close(out, ref, atol=FP16_MAX_ABS_TOL, rtol=FP16_MAX_REL_TOL)
+    torch.testing.assert_close(out, ref, atol=FP16_TOL["atol"], rtol=FP16_TOL["rtol"])
 
 
 def test_cpu_fallback_matches_reference_exactly():

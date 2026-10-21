@@ -326,7 +326,7 @@ if HAS_TRITON:
                 + kv_head * stride_kh
                 + offs_d[None, :] * stride_kd
             )
-            k = tl.load(k_ptrs, mask=mask[:, None], other=0).to(tl.float32) * k_scale
+            k = tl.load(k_ptrs, mask=mask[:, None], other=0.0).to(tl.float32) * k_scale
             scores = tl.sum(q[None, :] * k, axis=1) * softmax_scale
             scores = tl.where(mask, scores, -float("inf"))
 
@@ -343,7 +343,7 @@ if HAS_TRITON:
                 + kv_head * stride_vh
                 + offs_d[None, :] * stride_vd
             )
-            v = tl.load(v_ptrs, mask=mask[:, None], other=0).to(tl.float32) * v_scale
+            v = tl.load(v_ptrs, mask=mask[:, None], other=0.0).to(tl.float32) * v_scale
             acc += tl.sum(p[:, None] * v, axis=0)
             m_i = m_new
 
